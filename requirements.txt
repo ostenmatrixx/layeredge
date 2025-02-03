@@ -1,0 +1,2 @@
+web3==7.6.1
+colorlog
