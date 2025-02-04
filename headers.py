@@ -61,3 +61,13 @@ handler.setFormatter(formatter)
 logger = colorlog.getLogger()
 logger.addHandler(handler)
 logger.setLevel(colorlog.INFO)
+
+display = """
+========================================
+=           Layer Edge Node Bot        =
+=           Created by Anzywiz         =
+=    https://t.me/bot_arena_chat       =
+========================================
+"""
+
+print(display)
