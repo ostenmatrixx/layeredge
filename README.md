@@ -4,10 +4,10 @@ If you're farming the [Layer Edge](https://dashboard.layeredge.io/) incentivized
 
 ## 🚀 Features
 
-- Checks if an account is registered and registers a new one with a referral code.
-- Starts a light node.
-- Claims node points automatically every 24 hours.
-- Displays dashboard points.
+- Auto register/refer with referral code if account not created.
+- Auto starts a light node.
+- Auto claim daily streaks/node points every 24 hours.
+- Colorful display of  dashboard points and referrals.
 - Supports proxy integration.
 
 ## 📌 Setup
@@ -58,11 +58,12 @@ nano config.json
 ```json
 {
   "private_keys": ["your_private_key1", "your_private_key2"],
-  "proxies": "https://username:password@proxy_address:port"
+  "proxies": "https://username:password@proxy_address:port",
+  "referral_code": "kejjtEBA"
 }
 ```
 
-- Replace `your_private_key1` and `your_private_key2` with your actual private keys.
+- Replace `your_private_key1` and `your_private_key2` with your actual private keys of a registered or unregistered burner account.
 - Set `proxies` in the format above or to `null` if you don't have one.
 
 ### 5️⃣ Run the Bot
