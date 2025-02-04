@@ -1,5 +1,7 @@
 # LayerEdge Node Bot
 
+If you're farming the [Layer Edge](https://dashboard.layeredge.io/) incentivized node project and find periodically starting the node, performing daily streaks a hassle, or you would like to sybil multiple accounts to maximize rewards without being detected, then this bot is for you.
+
 ## 🚀 Features
 
 - Checks if an account is registered and registers a new one with a referral code.
@@ -61,7 +63,7 @@ nano config.json
 ```
 
 - Replace `your_private_key1` and `your_private_key2` with your actual private keys.
-- Set `proxies` in the format above or to `null` if you don't have one.
+- Set `proxies` in the format above or to `null` if you don't have one.
 
 ### 5️⃣ Run the Bot
 
@@ -75,7 +77,7 @@ Stay tuned for updates and improvements!
 
 ## 🛠 Issues & Contributions
 
-- If you encounter any issues, please report them in the **[Issues](place-issue-link-here)** section.
+- If you encounter any issues, please report them in the **[Issues](https://github.com/Anzywiz/LayerEdge-node-bot/issues)** section.
 - 💡 Want to improve the bot? Fork the repository, make your changes, and submit a **pull request (PR)**! Contributions are always welcome.
 
 ## 📜 License
