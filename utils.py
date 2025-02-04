@@ -135,6 +135,11 @@ def get_time_left(target_timestamp):
     return target_timestamp - current_timestamp
 
 
+def get_time_spent(timestamp: int):
+    current_timestamp = int(datetime.now().timestamp())
+    return current_timestamp - timestamp
+
+
 def convert_time_left(time_left):
     """
     convert to human-readable time
@@ -161,7 +166,14 @@ def verify_user(wallet_address, referral_code):
         if 'user not found' in str(e):
             logging.warning(
                 f"User {short_address(wallet_address)}: User NOT found. Registering user with ref code...")
-            register_wallet(wallet_address, referral_code)
+            response = verify_referral_code(referral_code)
+            ref_valid = response["data"]["valid"]
+            message = response["message"]
+            if ref_valid:
+                logging.info(f"User {short_address(wallet_address)}: {message}")
+                register_wallet(wallet_address, referral_code)
+            else:
+                raise Exception(f"User {short_address(wallet_address)}: {message}")
         else:
             raise e
 
@@ -177,7 +189,14 @@ def display_dashboard_logs(wallet_address):
         f"Referrals: {len(referrals)}. Referral Earnings: {total_points_ref}")
 
 
-async def run_node(private_key, referral_code='kejjtEBA'):
+def verify_referral_code(referral_code: str):
+    url = "https://referralapi.layeredge.io/api/referral/verify-referral-code"
+    payload = {"invite_code": referral_code}
+    response = get_response(url, payload)
+    return response
+
+
+async def run_node(private_key, referral_code):
     while True:
         account = Account.from_key(private_key)
         wallet_address = str(account.address)
@@ -223,11 +242,11 @@ async def claim_daily_node_points(private_key):
             await asyncio.sleep(60 * 60 * 6)
 
 
-async def main(private_keys: list):
+async def main(private_keys: list, referral_code):
     # Create tasks for both functions for each private key
     tasks = []
     for private_key in private_keys:
-        tasks.append(run_node(private_key))
+        tasks.append(run_node(private_key, referral_code))
         tasks.append(claim_daily_node_points(private_key))
 
     # Run all tasks concurrently
