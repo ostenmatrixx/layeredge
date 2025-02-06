@@ -1,7 +1,7 @@
 import asyncio
 from utils import main, data, logging
 
-private_keys = data.get("private_keys", [])
+private_keys = data.get("private_keys", [])[:10]
 if len(private_keys) >= 5:
     print(f"It seems you want to farm above 5 account!!."
           f"\nKindly check tg group for passcode: https://t.me/bot_arena_chat")
