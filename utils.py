@@ -43,6 +43,24 @@ def get_response(url: str, payload: Optional[dict] = None):
         raise e
 
 
+def get_ip():
+    url = 'https://api.ipify.org?format=json'
+
+    json_response = get_response(url)
+    proxy_ip = json_response.get('ip')
+
+    no_proxies_response = requests.get(url)
+    # Extract relevant information
+    real_ip = no_proxies_response.json().get('ip')
+
+    if proxy_ip == real_ip:
+        protected = False
+    else:
+        protected = True
+
+    return proxy_ip, protected
+
+
 def short_address(wallet_address):
     address = f"{''.join(wallet_address[:5])}..{''.join(wallet_address[-5:])}"
     return address
@@ -179,14 +197,32 @@ def verify_user(wallet_address, referral_code):
 
 
 def display_dashboard_logs(wallet_address):
+
     user_details = get_wallet_details(wallet_address)
     node_points = user_details['nodePoints']
+
+    # get current point based on time
+    status = get_node_status(wallet_address)
+    start_timestamp = status['startTimestamp']
+    if start_timestamp:
+        time_spent_secs = get_time_spent(start_timestamp)
+
+        # current node points are calculated as such
+        node_points = node_points + int(time_spent_secs / 3.6)
+
     daily_streak = user_details['dailyStreak']
-    referrals = user_details['referrals']
+
+    referralCode = user_details['referralCode']
     total_points_ref = user_details['totalPoints']
+    confirmedReferralPoints = user_details['confirmedReferralPoints']
+    confirmed_referrals = int(confirmedReferralPoints / 500)
+
+    pending_referrals_points = total_points_ref - confirmedReferralPoints
+    pending_ref = int(pending_referrals_points/ 500)
     logging.info(
-        f"User {short_address(wallet_address)}: Node points: {node_points}. Daily streak: {daily_streak}/7. "
-        f"Referrals: {len(referrals)}. Referral Earnings: {total_points_ref}")
+        f"User {short_address(wallet_address)} | Node points: {node_points} | Streak: {daily_streak}/7 | Ref Code: {referralCode} | "
+        f"Refs: {confirmed_referrals} | Earnings: {confirmedReferralPoints} | Pending - Refs: {pending_ref}, Points: {pending_referrals_points}"
+    )
 
 
 def verify_referral_code(referral_code: str):
@@ -197,6 +233,17 @@ def verify_referral_code(referral_code: str):
 
 
 async def run_node(private_key, referral_code):
+    # proxy check
+    try:
+        wallet_address = Account.from_key(private_key).address
+        ip, protected = get_ip()
+        if protected:
+            logging.info(f"User {short_address(wallet_address)}: IP address protected: {ip}")
+        else:
+            logging.warning(f"User {short_address(wallet_address)}: No IP Protection. User could be marked as bot {ip}")
+    except Exception as e:
+        logging.error(f"User {short_address(wallet_address)}: Error during IP Check {e}")
+
     while True:
         account = Account.from_key(private_key)
         wallet_address = str(account.address)
