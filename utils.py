@@ -19,17 +19,31 @@ except json.JSONDecodeError:
     raise ValueError(f"The config file is not a valid JSON file.")
 
 
-def get_response(url: str, payload: Optional[dict] = None):
+def get_response(url: str, payload: Optional[dict] = None, private_key: Optional[str] = None):
     """Make request with optional proxy support from config"""
     try:
-        proxies = data.get('proxies')
+        proxies = None
+
+        if private_key:
+            wallet_address = Account.from_key(private_key).address
+            logging.info(f"User {short_address(wallet_address)}: Using wallet address {wallet_address}")
+
+            # Check if a proxy is mapped to the wallet address (private key)
+            wallets_to_proxies = data.get('wallets_to_proxies', {})
+            if wallet_address in wallets_to_proxies:
+                proxy = wallets_to_proxies[wallet_address]
+                proxies = {"http": proxy, "https": proxy}
+                logging.info(f"User {short_address(wallet_address)}: Using proxy {proxy}")
+            else:
+                logging.info(f"User {short_address(wallet_address)}: No proxy mapped to wallet address.")
 
         request_params = {
             'url': url,
             'headers': headers,
             'timeout': (3.05, 20),
-            **({"proxies": {"http": proxies, "https": proxies}} if proxies else {})
+            **({"proxies": proxies} if proxies else {})
         }
+
         if payload:
             response = requests.post(**request_params, json=payload)
         else:
