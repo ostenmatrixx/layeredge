@@ -1,27 +1,38 @@
+Here is the content formatted as a README.md with proper Markdown syntax:
+
+---
+
 # LayerEdge Node Bot
 
-If you're farming the [Layer Edge](https://dashboard.layeredge.io/) incentivized node project and find periodically starting the node, performing daily streaks a hassle, or you would like to sybil multiple accounts to maximize rewards without being detected, then this bot is for you.
+This bot automates the process of farming the LayerEdge incentivized node project. It helps you manage your nodes, claim rewards, and maximize your farming potential, including support for multiple accounts and proxies.
 
 ## 🚀 Features
 
-- Auto register/refer with referral code if account not created.
-- Auto starts a light node.
-- Auto claim daily streaks/node points every 24 hours.
-- Colorful display of  dashboard points and referrals.
-- Supports proxy integration.
+- Auto-register and refer using your referral code if an account is not created.
+- Automatically starts a light node.
+- Automatically claims daily streaks and node points every 24 hours.
+- Displays dashboard points and referrals with a colorful interface.
+- Supports proxy integration for multiple accounts.
 
 ## 📌 Setup
 
 Follow these steps to set up and run the bot.
 
-### 1️⃣ Clone the Repository
+### -- Clone the Repository --
 
 ```bash
-git clone https://github.com/Anzywiz/LayerEdge-node-bot.git
-cd LayerEdge-node-bot
+git clone https://github.com/ostenmatrixx/layeredge.git
+cd layeredge
 ```
 
-### 2️⃣ Create and Activate a Virtual Environment
+### -- Create Virtual Environment --
+
+#### **Linux/WSL:**
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
 
 #### **Windows:**
 
@@ -30,60 +41,66 @@ python -m venv venv
 venv\Scripts\activate
 ```
 
-#### **Linux/Mac:**
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### 3️⃣ Install Dependencies
+### -- Install Dependencies --
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4️⃣ Configure the Bot
+### -- Generate Private Keys (Optional) --
 
-Create a `config.json` file in the project directory with the following structure:
-
-#### **For Linux/Mac:**
+#### **Linux/WSL:**
 
 ```bash
-nano config.json
+python3 key.py
 ```
 
-#### **config.json Example:**
+#### **Windows:**
 
-```json
-{
-  "private_keys": ["your_private_key1", "your_private_key2"],
-  "proxies": "https://username:password@proxy_address:port",
-  "referral_code": "kejjtEBA"
-}
+```bash
+python key.py
 ```
 
-- Replace `your_private_key1` and `your_private_key2` with your actual private keys of a registered or unregistered burner account.
-- Set `proxies` in the format above or to `null` if you don't have one.
+Once the keys are generated, you can find your private keys in the `pk.txt` file.
 
-### 5️⃣ Run the Bot
+### -- Running the Bot --
+
+1. Import your private keys from `pk.txt` (skip this step if you generated keys using `key.py`).
+2. Import proxies from `proxy.txt` (1 proxy = 1 private key).
+3. Open `config.py`, go to line 36, and enter your own referral code.
+
+#### Run `config.py` in the terminal:
+
+#### **Linux/WSL:**
+
+```bash
+python3 config.py
+```
+
+#### **Windows:**
+
+```bash
+python config.py
+```
+
+This will generate the `config.json` file with your proxies, private keys, and referral code.
+
+### -- Start the Bot --
+
+Once the configuration is set up, you can start the bot.
+
+#### **Linux/WSL:**
+
+```bash
+python3 main.py
+```
+
+#### **Windows:**
 
 ```bash
 python main.py
 ```
 
-## 🔄 Updates
+---
 
-Stay tuned for updates and improvements!
-
-## 🛠 Issues & Contributions
-
-- If you encounter any issues, please report them in the **[Issues](https://github.com/Anzywiz/LayerEdge-node-bot/issues)** section.
-- 💡 Want to improve the bot? Fork the repository, make your changes, and submit a **pull request (PR)**! Contributions are always welcome.
-
-## 📜 License
-
-This project is licensed under the **MIT License**.
-
-⭐ **Don't forget to star the repo if you find it useful! Your support helps keep the project growing!** 😊
-
+This is now ready to be copied into a `README.md` file!
