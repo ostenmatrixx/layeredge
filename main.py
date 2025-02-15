@@ -11,5 +11,5 @@ if proxies:
 else:
     logging.warning('Bot NOT configured with Proxies!!')
 
-referral_code = data.get("referral_code")
-asyncio.run(main(private_keys, referral_code))
+referral_codes = data.get("referral_codes", [])
+asyncio.run(main(private_keys, referral_codes))

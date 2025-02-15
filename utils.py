@@ -8,6 +8,7 @@ from typing import Optional
 from datetime import datetime
 from headers import headers
 import json
+import random
 
 try:
     # Load data from the JSON file
@@ -303,10 +304,11 @@ async def claim_daily_node_points(private_key):
             await asyncio.sleep(60 * 60 * 6)
 
 
-async def main(private_keys: list, referral_code):
-    # Create tasks for both functions for each private key
+async def main(private_keys: list, referral_codes: list):
+    # Create tasks for both functions for each private key and referral code pair
     tasks = []
     for private_key in private_keys:
+        referral_code = random.choice(referral_codes)
         tasks.append(run_node(private_key, referral_code))
         tasks.append(claim_daily_node_points(private_key))
 
